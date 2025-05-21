@@ -13,7 +13,7 @@ To stay consistent with daily DSA practice and build strong problem-solving skil
 
 ## 📅 Daily Goals
 
-- ✅ Solve at least **1 DSA problem per day**
+- ✅ Solve at least **3 DSA problem per day**
 - ✅ Focus on mastering **core concepts** (arrays, strings, trees, graphs, DP, etc.)
 - ✅ Cover all difficulty levels: Easy, Medium, and Hard
 - ✅ Add **well-commented code** for clarity and revision
