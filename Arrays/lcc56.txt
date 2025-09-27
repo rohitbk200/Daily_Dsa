@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        int n = intervals.size();
+
+        // 1) Sort intervals by start (and then by end). Default sort on vector<int>
+        //    is lexicographic, so [start, end] pairs are sorted by start ascending.
+        sort(intervals.begin(), intervals.end());
+
+        // 2) Scan from left to right, merging into 'ans'
+        for (int i = 0; i < n; i++) {
+            // If 'ans' is empty OR current interval starts AFTER the last merged interval ends,
+            // there is no overlap → start a new merged interval.
+            // Note: using '>' means [1,4] and [4,5] ARE considered overlapping and will be merged.
+            if (ans.empty() || intervals[i][0] > ans.back()[1]) {
+                ans.push_back(intervals[i]);
+            } else {
+                // Overlap case → extend the end of the last merged interval
+                // to cover the current interval's end if needed.
+                ans.back()[1] = max(ans.back()[1], intervals[i][1]);
+            }
+        }
+
+        // Time: O(n log n) for sort + O(n) scan  → O(n log n)
+        // Space: O(1) extra (output not counted), since we merge in-place into 'ans'
+        return ans;
+    }
+};
