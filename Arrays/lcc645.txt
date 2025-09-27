@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        long long n = nums.size();                         // number of elements (should be values 1..n with one dup and one missing)
+
+        // Precomputed sums for 1..n
+        long long sn  = (n * (n + 1)) / 2;                 // sum of first n natural numbers: 1 + 2 + ... + n
+        long long s2n = (n * (n + 1) * (2 * n + 1)) / 6;   // sum of squares: 1^2 + 2^2 + ... + n^2
+
+        long long s1 = 0, s2 = 0;                          // s1 = sum(nums), s2 = sum(nums^2)
+
+        // Accumulate the sum and sum of squares from the given array
+        for (int i = 0; i < n; i++) {
+            s1 += nums[i];                                 // add value
+            s2 += (long long)nums[i] * (long long)nums[i]; // add square of value
+        }
+
+        // Let dup = x, miss = y.
+        // We have two equations:
+        //  (1) s1 - sn = x - y
+        //  (2) s2 - s2n = x^2 - y^2 = (x - y)(x + y)
+        int val1 = s1 - sn;                                // S  = x - y
+        int val2 = s2 - s2n;                               // S2 = (x - y)(x + y)
+
+        val2 = val2 / val1;                                // (x + y) = S2 / S
+
+        long long x = (val1 + val2) / 2;                   // x = ( (x - y) + (x + y) ) / 2
+        long long y = x - val1;                            // y = x - (x - y)
+
+        return {(int)x, (int)y};                           // return {duplicate, missing}
+    }
+};
