@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());                 // Sort to enable two-pointer search and easy duplicate skipping
+        vector<vector<int>> ans;
+
+        // Fix first element at i
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;  // Skip duplicates for the first element
+
+            // Fix second element at j (to the right of i)
+            for (int j = i + 1; j < n; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue; // Skip duplicates for the second element
+
+                int k = j + 1;           // Left pointer for the remaining pair
+                int l = n - 1;           // Right pointer for the remaining pair
+
+                // Two-pointer sweep to find pairs (k, l) so that nums[i]+nums[j]+nums[k]+nums[l] == target
+                while (k < l) {
+                    long long sum = nums[i];   // Use long long to avoid overflow when adding four ints
+                    sum += nums[j];
+                    sum += nums[k];
+                    sum += nums[l];
+
+                    if (sum == target) {
+                        // Found a valid quadruplet
+                        vector<int> temp = {nums[i], nums[j], nums[k], nums[l]};
+                        ans.push_back(temp);
+
+                        // Move both pointers to search for the next unique pair
+                        k++; l--;
+
+                        // Skip duplicates at k to avoid repeating the same quadruplet
+                        while (k < l && nums[k] == nums[k - 1]) k++;
+                        // Skip duplicates at l to avoid repeating the same quadruplet
+                        while (k < l && nums[l] == nums[l + 1]) l--;
+
+                    } else if (sum < target) {
+                        // Need a larger sum → move left pointer right
+                        k++;
+                    } else {
+                        // Need a smaller sum → move right pointer left
+                        l--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
